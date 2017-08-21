@@ -8,7 +8,7 @@ ADD https://dl-ssl.google.com/linux/linux_signing_key.pub /tmp/linux_signing_key
 RUN apt-key add /tmp/linux_signing_key.pub && \
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
     apt-get update && \
-    apt-get install -y google-chrome-stable firefox xvfb python python-pip
+    apt-get install -y google-chrome-stable firefox xvfb python python-pip openjdk-8-jre
 
 ADD https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz /opt
 

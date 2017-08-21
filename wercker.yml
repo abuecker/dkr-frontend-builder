@@ -14,14 +14,15 @@ deploy:
         name: Setup the container
         code: >
           apt-get update &&
-          apt-get install -y curl &&
+          apt-get install -y curl xz-utils &&
           curl https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub &&
           curl https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz -o /tmp/node-v6.11.2-linux-x64.tar.xz &&
+          cd /opt && tar xf /tmp/node-v6.11.2-linux-x64.tar.xz &&
           apt-key add /tmp/linux_signing_key.pub &&
           echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list &&
           apt-get update &&
-          apt-get install -y google-chrome-stable firefox xvfb python python-pip &&
-          rm -rf /tmp/* && apt-get clean
+          apt-get install -y google-chrome-stable firefox xvfb python python-pip openjdk-8-jre &&
+          rm -rf /tmp/* && apt-get remove -y xz-utils && apt-get clean
 
 
     - internal/docker-push:
@@ -30,3 +31,4 @@ deploy:
         tag: latest, $WERCKER_GIT_COMMIT
         repository: abuecker/frontend-builder
         registry: https://registry.hub.docker.com
+        env: PATH=/opt/node-v6.11.2-linux-x64/bin:$PATH DISPLAY=:99 NPM_CONFIG_LOGLEVEL=info
